@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import * as C from "./constants";
+import axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./App.css";
+import { Component } from "react";
+import { Pane } from "evergreen-ui";
+
+import Header from "./Components/Header";
+import TodoTable from "./Components/Table/TodoTable";
+import Footer from "./Components/Footer";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [{ id: 1 }],
+      newTodo: undefined,
+      addTodoSuccess: false,
+      addTodoDanger: false,
+    };
+
+    this.getTodoUsername = this.getTodoUsername.bind(this);
+    this.onNewTodo = this.onNewTodo.bind(this);
+  }
+
+  async componentDidMount() {
+    // get users data
+    const users = await axios
+      .get(C.USER_API)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+
+    // setState with result
+    this.setState({ users });
+  }
+
+  getTodoUsername(id) {
+    let user = this.state.users.filter((user) => user.id === id);
+    if (user.length) {
+      return user[0].name;
+    }
+    return "Loading...";
+  }
+
+  onNewTodo(todo) {
+    this.setState({ newTodo: todo });
+  }
+
+  render() {
+    const { users, newTodo } = this.state;
+    return (
+      <Pane height="100vh" minHeight={900} paddingY={200} className="todo-app">
+        <Header
+          title="React Todo List"
+          users={users}
+          onNewTodo={this.onNewTodo}
+        />
+        <TodoTable
+          users={users}
+          getTodoUsername={this.getTodoUsername}
+          newTodo={newTodo}
+        />
+        <Footer title="React Todo List - 2020" />
+      </Pane>
+    );
+  }
 }
 
 export default App;
