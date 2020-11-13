@@ -1,8 +1,8 @@
 import axios from "axios";
 import { v4 } from "uuid";
-import { Component } from "react";
+import { Component, Fragment } from "react";
 import * as C from "../../constants";
-import { Pane, Table, Spinner } from "evergreen-ui";
+import { Pane, Table, Spinner, Alert } from "evergreen-ui";
 
 import FilterBar from "../FilterBar";
 import BodyTodoRows from "./BodyTodoRows";
@@ -16,6 +16,8 @@ class TodoTable extends Component {
       newTodo: {},
       users: this.props.users,
       spinner: false,
+      alertSuccess: false,
+      alertDanger: false,
     };
 
     this.toggleCompleted = this.toggleCompleted.bind(this);
@@ -92,27 +94,31 @@ class TodoTable extends Component {
         // on success add todo to state
         if (res.status === 201 && typeof res.data === "object") {
           // add todo to state
-          const todos = [{ ...res.data, id: v4() }, ...newTodos];
-          this.setState({ todos });
+          const newTodo = { ...res.data, id: v4() };
+          const todos = [newTodo, ...newTodos];
+          this.setState({ todos, alertSuccess: true, newTodoId: newTodo.id });
         }
       })
       .catch((err) => {
         console.log(err);
-        this.props.addTodoDanger();
+        this.setState({ alertDanger: true });
       });
   }
 
   render() {
-    const { todos, spinner } = this.state;
+    const { todos, spinner, alertDanger, alertSuccess, newTodoId } = this.state;
+    const { users } = this.props;
 
     return (
-      <>
-        <FilterBar />
+      <Pane maxWidth={C.MAX_WIDTH} margin="auto">
+        <FilterBar
+          users={users}
+          onUserFilter={this.onUserFilter}
+          onTitleFilter={this.onTitleFilter}
+        />
         <Table
           width="100%"
-          maxWidth={C.MAX_WIDTH}
-          margin="auto"
-          elevation={3}
+          elevation={1}
           position="relative"
           borderRadius={3}
           overflow="hidden"
@@ -154,7 +160,34 @@ class TodoTable extends Component {
             )}
           </Table.Body>
         </Table>
-      </>
+        {alertSuccess ? (
+          <Alert
+            isRemoveable
+            appearance="card"
+            marginTop={16}
+            intent="success"
+            title={`Todo Created (id:${newTodoId})`}
+            marginBottom={16}
+            elevation={2}
+            onRemove={() => this.setState({ alertSuccess: false })}
+          >
+            Your todo was created and added to the list
+          </Alert>
+        ) : alertDanger ? (
+          <Alert
+            isRemoveable
+            appearance="card"
+            marginTop={16}
+            intent="danger"
+            title="We weren’t able to save your todo"
+            marginBottom={16}
+            elevation={2}
+            onRemove={() => this.setState({ alertDanger: false })}
+          >
+            There was a problem trying to create your todo. Please try again...
+          </Alert>
+        ) : null}
+      </Pane>
     );
   }
 }

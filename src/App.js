@@ -49,7 +49,7 @@ class App extends Component {
   render() {
     const { users, newTodo } = this.state;
     return (
-      <Pane height="100vh" minHeight={900} paddingY={200} className="todo-app">
+      <Pane minHeight="100vh" paddingY={200} className="todo-app">
         <Header
           title="React Todo List"
           users={users}

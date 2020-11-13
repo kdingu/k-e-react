@@ -9,7 +9,7 @@ const Footer = ({ title = "Todo List 2020" }) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      boxShadow="1px 1px 10px rgba(0,0,0,0.5)"
+      boxShadow="1px 1px 4px rgba(0,0,0,0.6)"
       position="fixed"
       bottom={0}
     >

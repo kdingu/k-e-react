@@ -1,6 +1,6 @@
 import * as C from "../constants";
 import { Component } from "react";
-import { Pane, SearchInput } from "evergreen-ui";
+import { Pane, SearchInput, Select } from "evergreen-ui";
 
 class FilterBar extends Component {
   constructor(props) {
@@ -9,6 +9,7 @@ class FilterBar extends Component {
   }
 
   render() {
+    const { users } = this.props;
     return (
       <Pane
         maxWidth={C.MAX_WIDTH}
@@ -22,7 +23,7 @@ class FilterBar extends Component {
         elevation={1}
       >
         <Pane width="100%" display="flex" flex={1} justifyContent="center">
-          <SearchInput
+          {/* <SearchInput
             maxWidth="100%"
             placeholder="Filter username..."
             value={this.state.usernameFilter}
@@ -30,7 +31,18 @@ class FilterBar extends Component {
               this.props.usernameFilterChange(e.target.value);
               this.setState({ usernameFilter: e.target.value });
             }}
-          />
+          /> */}
+          <Select
+            value={this.props.users[0].id}
+            onChange={(event) =>
+              this.setState({ usernameFilter: event.target.value })
+            }
+          >
+            {/* print options from props.users */}
+            {users.map((user) => {
+              return <option>{user.name}</option>;
+            })}
+          </Select>
         </Pane>
         <Pane width="100%" display="flex" flex={1} justifyContent="center">
           <SearchInput

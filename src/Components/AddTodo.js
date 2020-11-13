@@ -1,5 +1,3 @@
-import * as C from "../constants";
-import axios from "axios";
 import { Component } from "react";
 import {
   Pane,
@@ -71,21 +69,6 @@ class AddTodo extends Component {
         >
           {({ close }) => (
             <>
-              {alertSuccess ? (
-                <Alert intent="success" title="Todo Created" marginBottom={16}>
-                  Your todo was created and added to the list
-                </Alert>
-              ) : alertDanger ? (
-                <Alert
-                  intent="danger"
-                  title="We weren’t able to save your todo"
-                  marginBottom={16}
-                >
-                  There was a problem trying to create your todo. Please try
-                  again...
-                </Alert>
-              ) : null}
-
               <form onSubmit={this.submitAddTodo}>
                 <TextInputField
                   label="Todo Title"

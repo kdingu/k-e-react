@@ -17,7 +17,7 @@ const Header = ({
       width="100%"
       position="fixed"
       top="0"
-      elevation={2}
+      elevation={1}
       zIndex={10000}
     >
       <Pane
