@@ -1,3 +1,4 @@
+import { Table } from "evergreen-ui";
 import TodoRow from "./TodoRow";
 
 const BodyTodoRows = ({
@@ -6,25 +7,48 @@ const BodyTodoRows = ({
   toggleCompleted = (f) => f,
   deleteTodo = (f) => f,
   newTodo,
+  usernameFilter = false,
+  titleFilter = "",
 }) => {
   let newTodos = [...todos];
+
   if (newTodo) {
     console.log("new Todo ready to be added to list", newTodo);
     newTodos = [newTodo, ...todos];
   }
-  return newTodos.map((t, i) => {
-    const username = getTodoUsername(t.userId);
-    return (
-      <TodoRow
-        key={i}
-        todo={t}
-        username={username}
-        completed={t.completed}
-        toggleCompleted={toggleCompleted}
-        deleteTodo={deleteTodo}
-      />
+
+  if (usernameFilter) {
+    newTodos = newTodos.filter(
+      (todo) => todo.userId === parseInt(usernameFilter)
     );
-  });
+  }
+
+  if (titleFilter !== "") {
+    newTodos = newTodos.filter(
+      (todo) => todo.title.indexOf(titleFilter) !== -1
+    );
+  }
+
+  return newTodos.length ? (
+    newTodos.map((t, i) => {
+      const username = getTodoUsername(t.userId);
+
+      return (
+        <TodoRow
+          key={i}
+          todo={t}
+          username={username}
+          completed={t.completed}
+          toggleCompleted={toggleCompleted}
+          deleteTodo={deleteTodo}
+        />
+      );
+    })
+  ) : (
+    <Table.Row textAlign="center">
+      <Table.TextCell>No Todos Found</Table.TextCell>
+    </Table.Row>
+  );
 };
 
 export default BodyTodoRows;

@@ -2,7 +2,7 @@ import axios from "axios";
 import { v4 } from "uuid";
 import { Component, Fragment } from "react";
 import * as C from "../../constants";
-import { Pane, Table, Spinner, Alert } from "evergreen-ui";
+import { Pane, Table, Spinner, Alert, Heading } from "evergreen-ui";
 
 import FilterBar from "../FilterBar";
 import BodyTodoRows from "./BodyTodoRows";
@@ -18,10 +18,15 @@ class TodoTable extends Component {
       spinner: false,
       alertSuccess: false,
       alertDanger: false,
+
+      usernameFilter: false,
+      titleFilter: "",
     };
 
     this.toggleCompleted = this.toggleCompleted.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
+    this.onUsernameFilterChange = this.onUsernameFilterChange.bind(this);
+    this.onTitleFilterChange = this.onTitleFilterChange.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -105,17 +110,50 @@ class TodoTable extends Component {
       });
   }
 
+  onUsernameFilterChange(usernameFilter) {
+    this.setState({ usernameFilter });
+  }
+
+  onTitleFilterChange(titleFilter) {
+    this.setState({ titleFilter });
+  }
+
   render() {
-    const { todos, spinner, alertDanger, alertSuccess, newTodoId } = this.state;
+    const {
+      todos,
+      spinner,
+      alertDanger,
+      alertSuccess,
+      newTodoId,
+      usernameFilter,
+      titleFilter,
+    } = this.state;
     const { users } = this.props;
 
     return (
       <Pane maxWidth={C.MAX_WIDTH} margin="auto">
+        <Heading
+          style={{ textTransform: "uppercase" }}
+          marginBottom={6}
+          size={600}
+        >
+          Filter Options
+        </Heading>
         <FilterBar
           users={users}
           onUserFilter={this.onUserFilter}
           onTitleFilter={this.onTitleFilter}
+          onUsernameFilterChange={this.onUsernameFilterChange}
+          onTitleFilterChange={this.onTitleFilterChange}
         />
+        <Heading
+          style={{ textTransform: "uppercase" }}
+          marginTop={76}
+          marginBottom={6}
+          size={600}
+        >
+          List
+        </Heading>
         <Table
           width="100%"
           elevation={1}
@@ -142,6 +180,8 @@ class TodoTable extends Component {
               <>
                 <BodySpinner isShown={spinner} />
                 <BodyTodoRows
+                  titleFilter={titleFilter}
+                  usernameFilter={usernameFilter}
                   todos={todos}
                   getTodoUsername={this.props.getTodoUsername}
                   toggleCompleted={this.toggleCompleted}
