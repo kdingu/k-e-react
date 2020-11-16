@@ -6,7 +6,6 @@ import {
   TextInputField,
   AddIcon,
   SelectField,
-  Alert,
 } from "evergreen-ui";
 
 class AddTodo extends Component {
@@ -56,7 +55,6 @@ class AddTodo extends Component {
 
   render() {
     const users = this.props.users.map((user) => user);
-    const { alertSuccess, alertDanger } = this.state;
 
     return (
       <Pane>

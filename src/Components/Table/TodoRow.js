@@ -42,15 +42,7 @@ const TodoRow = ({
             content={({ close }) => (
               <Menu>
                 <Menu.Group>
-                  <Menu.Item
-                    onSelect={() => {
-                      close();
-                      alert(`Edit ${todo.title}`);
-                    }}
-                    icon={EditIcon}
-                  >
-                    Edit
-                  </Menu.Item>
+                  <Menu.Item icon={EditIcon}>edit</Menu.Item>
                   <Menu.Item
                     icon={completed ? IssueNewIcon : IssueClosedIcon}
                     onSelect={() => {

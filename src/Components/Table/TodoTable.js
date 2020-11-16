@@ -135,7 +135,7 @@ class TodoTable extends Component {
         <Heading
           style={{ textTransform: "uppercase" }}
           marginBottom={6}
-          size={600}
+          size={100}
         >
           Filter Options
         </Heading>
@@ -150,7 +150,7 @@ class TodoTable extends Component {
           style={{ textTransform: "uppercase" }}
           marginTop={76}
           marginBottom={6}
-          size={600}
+          size={100}
         >
           List
         </Heading>

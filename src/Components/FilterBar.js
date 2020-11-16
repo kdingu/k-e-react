@@ -10,6 +10,21 @@ class FilterBar extends Component {
     this.timer = 0;
   }
 
+  setTitleFilter = (e) => {
+    this.setState({ titleFilter: e.target.value });
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
+      this.props.onTitleFilterChange(this.state.titleFilter);
+    }, 500);
+  };
+
+  setUserFilter = (e) => {
+    this.setState({ usernameFilter: e.target.value });
+    this.props.onUsernameFilterChange(parseInt(e.target.value));
+  };
+
   render() {
     const { usernameFilter, titleFilter } = this.state;
     const { users } = this.props;
@@ -30,13 +45,12 @@ class FilterBar extends Component {
             <Select
               width="100%"
               value={usernameFilter}
-              onChange={(event) => {
-                this.setState({ usernameFilter: event.target.value });
-                this.props.onUsernameFilterChange(parseInt(event.target.value));
-              }}
+              onChange={this.setUserFilter}
             >
               {/* Default option with no filter */}
-              <option value={false}>No Filter</option>
+              <option key={1234567890} value={false}>
+                No Filter
+              </option>
               {/* print options from props.users */}
               {users.map((user, i) => {
                 return (
@@ -55,15 +69,7 @@ class FilterBar extends Component {
               maxWidth="100%"
               placeholder="Filter title..."
               value={titleFilter}
-              onChange={(e) => {
-                this.setState({ titleFilter: e.target.value });
-                if (this.timer) {
-                  clearTimeout(this.timer);
-                }
-                this.timer = setTimeout(() => {
-                  this.props.onTitleFilterChange(e.target.value);
-                }, 1000);
-              }}
+              onChange={this.setTitleFilter}
             />
           </FormField>
         </Pane>
@@ -71,5 +77,9 @@ class FilterBar extends Component {
     );
   }
 }
+
+FilterBar.defaultProps = {
+  users: [{ id: 1, name: "Default" }],
+};
 
 export default FilterBar;
