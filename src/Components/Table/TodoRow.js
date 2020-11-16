@@ -10,6 +10,7 @@ import {
   CogIcon,
   IconButton,
 } from "evergreen-ui";
+import AddDialog from "./AddDialog";
 import React from "react";
 
 const TodoRow = ({
@@ -20,6 +21,7 @@ const TodoRow = ({
   deleteTodo = (f) => f,
   disableCompletedBtn = false,
   disableDeleteBtn = false,
+  onEdit = (f) => f,
 }) => {
   return (
     <>
@@ -42,7 +44,9 @@ const TodoRow = ({
             content={({ close }) => (
               <Menu>
                 <Menu.Group>
-                  <Menu.Item icon={EditIcon}>edit</Menu.Item>
+                  <Menu.Item icon={EditIcon} onClick={() => onEdit(todo)}>
+                    Edit
+                  </Menu.Item>
                   <Menu.Item
                     icon={completed ? IssueNewIcon : IssueClosedIcon}
                     onSelect={() => {
@@ -75,6 +79,7 @@ const TodoRow = ({
           </Popover>
         </Table.TextCell>
       </Table.Row>
+      <AddDialog user={username} title={todo.title} />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import * as C from "../constants";
+import * as C from "../../constants";
 import { Component } from "react";
 import { Pane, SearchInput, Select, FormField } from "evergreen-ui";
 

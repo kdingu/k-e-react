@@ -4,7 +4,7 @@ import { Component, Fragment } from "react";
 import * as C from "../../constants";
 import { Pane, Table, Spinner, Alert, Heading } from "evergreen-ui";
 
-import FilterBar from "../FilterBar";
+import FilterBar from "./FilterBar";
 import BodyTodoRows from "./BodyTodoRows";
 import BodySpinner from "./BodySpinner";
 
@@ -18,6 +18,9 @@ class TodoTable extends Component {
       spinner: false,
       alertSuccess: false,
       alertDanger: false,
+
+      editShown: false,
+      edittingTodo: null,
 
       usernameFilter: false,
       titleFilter: "",
@@ -48,6 +51,16 @@ class TodoTable extends Component {
     const todos = await axios.get(C.TODO_API).then((res) => res.data);
     this.setState({ todos });
   }
+
+  toggleEdit = (todo) => {
+    if (todo) {
+      this.setState({ editShown: !this.state.editShown, edittingTodo: todo });
+    } else {
+      this.setState({ editShown: !this.state.editShown, edittingTodo: null });
+    }
+
+    // TBC
+  };
 
   async toggleCompleted(id) {
     this.setState({ spinner: true });
@@ -114,8 +127,8 @@ class TodoTable extends Component {
     this.setState({ usernameFilter });
   }
 
-  onTitleFilterChange(titleFilter) {
-    this.setState({ titleFilter });
+  onTitleFilterChange(filter) {
+    this.setState({ titleFilter: filter.toLowerCase() });
   }
 
   render() {
@@ -186,6 +199,7 @@ class TodoTable extends Component {
                   getTodoUsername={this.props.getTodoUsername}
                   toggleCompleted={this.toggleCompleted}
                   deleteTodo={this.deleteTodo}
+                  onEdit={this.toggleEdit}
                 />
               </>
             ) : (

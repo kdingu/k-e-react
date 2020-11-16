@@ -9,6 +9,7 @@ const BodyTodoRows = ({
   newTodo,
   usernameFilter = false,
   titleFilter = "",
+  onEdit = (f) => f,
 }) => {
   let newTodos = [...todos];
 
@@ -41,11 +42,12 @@ const BodyTodoRows = ({
           completed={t.completed}
           toggleCompleted={toggleCompleted}
           deleteTodo={deleteTodo}
+          onEdit={onEdit}
         />
       );
     })
   ) : (
-    <Table.Row textAlign="center">
+    <Table.Row textAlign="center" style={{ border: "none" }}>
       <Table.TextCell>No Todos Found</Table.TextCell>
     </Table.Row>
   );
