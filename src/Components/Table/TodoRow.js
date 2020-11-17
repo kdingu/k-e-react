@@ -33,7 +33,7 @@ const TodoRow = ({
 
         <Table.TextCell>{todo.title}</Table.TextCell>
 
-        <Table.TextCell>
+        <Table.TextCell position="relative">
           <Popover
             position={Position.BOTTOM_RIGHT}
             content={({ close }) => (
@@ -70,7 +70,14 @@ const TodoRow = ({
               </Menu>
             )}
           >
-            <IconButton float="right" icon={CogIcon} />
+            <IconButton
+              position="absolute"
+              top="50%"
+              right={10}
+              transform="translateY(-50%)"
+              appearance="minimal"
+              icon={CogIcon}
+            />
           </Popover>
         </Table.TextCell>
       </Table.Row>

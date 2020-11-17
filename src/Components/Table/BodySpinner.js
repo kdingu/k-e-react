@@ -4,7 +4,6 @@ import { Pane, Spinner } from "evergreen-ui";
 const BodySpinner = ({ isShown = false }) => {
   return isShown ? (
     <Pane
-      zIndex={1000}
       minHeight={400}
       height="100%"
       width="100%"

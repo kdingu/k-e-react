@@ -40,7 +40,7 @@ class TodoTable extends Component {
     return null;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.newTodo !== this.state.newTodo) {
       this.addTodo(this.props.newTodo);
     }
@@ -112,7 +112,7 @@ class TodoTable extends Component {
   }
 
   async addTodo(todo) {
-    const newTodos = [...this.state.todos];
+    this.setState({ spinner: true });
 
     // submit post to server
     return await axios
@@ -121,22 +121,21 @@ class TodoTable extends Component {
         // on success add todo to state
         if (res.status === 201 && typeof res.data === "object") {
           // add todo to state
-          const newTodo = { ...res.data, id: v4() };
-          const todos = [newTodo, ...newTodos];
-          this.setState({ todos, alertSuccess: true, newTodoId: newTodo.id });
+          const todos = [todo, ...this.state.todos];
+          this.setState({ todos, alertSuccess: true, spinner: false });
 
           // remove alert after 5sec
           if (this.alertTimeout) {
             clearTimeout(this.alertTimeout);
           }
           this.alertTimeout = setTimeout(() => {
-            this.setState({ alertSuccess: false });
+            this.setState({ alertSuccess: false, spinner: false });
           }, 5000);
         }
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ alertDanger: true });
+        this.setState({ alertDanger: true, spinner: false });
       });
   }
 

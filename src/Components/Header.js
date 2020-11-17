@@ -19,7 +19,7 @@ const Header = ({
       position="fixed"
       top="0"
       elevation={1}
-      zIndex={10000}
+      zIndex={10}
     >
       <Pane
         display="flex"

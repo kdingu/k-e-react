@@ -42,19 +42,15 @@ class App extends Component {
     return "Loading...";
   }
 
-  onNewTodo(todo) {
-    this.setState({ newTodo: todo });
+  onNewTodo(newTodo) {
+    this.setState({ newTodo });
   }
 
   render() {
     const { users, newTodo } = this.state;
     return (
       <Pane minHeight="100vh" paddingY={100} className="todo-app">
-        <Header
-          title="React Todo List"
-          users={users}
-          onNewTodo={this.onNewTodo}
-        />
+        <Header title="E-React" users={users} onNewTodo={this.onNewTodo} />
         <TodoTable
           users={users}
           getTodoUsername={this.getTodoUsername}

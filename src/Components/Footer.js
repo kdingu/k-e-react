@@ -12,6 +12,7 @@ const Footer = ({ title = "Todo List 2020" }) => {
       boxShadow="1px 1px 4px rgba(0,0,0,0.6)"
       position="fixed"
       bottom={0}
+      zIndex={10}
     >
       <Heading size={100}>{title}</Heading>
     </Pane>
