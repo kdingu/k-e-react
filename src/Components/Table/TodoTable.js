@@ -1,12 +1,13 @@
 import axios from "axios";
 import { v4 } from "uuid";
-import { Component, Fragment } from "react";
+import { Component } from "react";
 import * as C from "../../constants";
 import { Pane, Table, Spinner, Alert, Heading } from "evergreen-ui";
 
 import FilterBar from "./FilterBar";
 import BodyTodoRows from "./BodyTodoRows";
 import BodySpinner from "./BodySpinner";
+import EditDialog from "./EditDialog";
 
 class TodoTable extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class TodoTable extends Component {
     this.state = {
       todos: [],
       newTodo: {},
-      users: this.props.users,
+      // users: this.props.users,
       spinner: false,
       alertSuccess: false,
       alertDanger: false,
@@ -54,12 +55,38 @@ class TodoTable extends Component {
 
   toggleEdit = (todo) => {
     if (todo) {
-      this.setState({ editShown: !this.state.editShown, edittingTodo: todo });
+      this.setState({ editShown: true, edittingTodo: todo });
     } else {
-      this.setState({ editShown: !this.state.editShown, edittingTodo: null });
+      this.setState({ editShown: false, edittingTodo: null });
     }
+  };
 
-    // TBC
+  updateTodo = async (todo) => {
+    // show spinner
+    this.setState({ spinner: true });
+
+    // create new todos state array
+    const todos = this.state.todos.map((t) => {
+      return t.id === todo.id ? { ...todo } : { ...t };
+    });
+
+    // call axios update
+    await axios
+      .patch(`${C.TODO_API}/${todo.id}`, todo)
+      .then((res) => {
+        if (res.status === 200) {
+          // on success update state, remove spinner and show alert
+          this.setState({ spinner: false, todos, alertSuccess: true });
+        } else {
+          // bad res.status, show alert and remove spinner
+          this.setState({ alertDanger: true, spinner: false });
+        }
+      })
+      .catch((err) => {
+        // on fail remove spinner and show alert
+        console.log(err);
+        this.setState({ alertDanger: true, spinner: false });
+      });
   };
 
   async toggleCompleted(id) {
@@ -137,9 +164,10 @@ class TodoTable extends Component {
       spinner,
       alertDanger,
       alertSuccess,
-      newTodoId,
       usernameFilter,
       titleFilter,
+      editShown,
+      edittingTodo,
     } = this.state;
     const { users } = this.props;
 
@@ -161,7 +189,7 @@ class TodoTable extends Component {
         />
         <Heading
           style={{ textTransform: "uppercase" }}
-          marginTop={76}
+          marginTop={16}
           marginBottom={6}
           size={100}
         >
@@ -197,7 +225,7 @@ class TodoTable extends Component {
                   usernameFilter={usernameFilter}
                   todos={todos}
                   getTodoUsername={this.props.getTodoUsername}
-                  toggleCompleted={this.toggleCompleted}
+                  toggleCompleted={this.updateTodo}
                   deleteTodo={this.deleteTodo}
                   onEdit={this.toggleEdit}
                 />
@@ -220,12 +248,12 @@ class TodoTable extends Component {
             appearance="card"
             marginTop={16}
             intent="success"
-            title={`Todo Created (id:${newTodoId})`}
+            title="Success!"
             marginBottom={16}
             elevation={2}
             onRemove={() => this.setState({ alertSuccess: false })}
           >
-            Your todo was created and added to the list
+            Your action was saved successfully
           </Alert>
         ) : alertDanger ? (
           <Alert
@@ -233,14 +261,21 @@ class TodoTable extends Component {
             appearance="card"
             marginTop={16}
             intent="danger"
-            title="We weren’t able to save your todo"
+            title="Problem!"
             marginBottom={16}
             elevation={2}
             onRemove={() => this.setState({ alertDanger: false })}
           >
-            There was a problem trying to create your todo. Please try again...
+            There was a problem trying to save your aciton
           </Alert>
         ) : null}
+        <EditDialog
+          isShown={editShown}
+          todo={edittingTodo}
+          users={users}
+          onSave={this.updateTodo}
+          closed={this.toggleEdit}
+        />
       </Pane>
     );
   }

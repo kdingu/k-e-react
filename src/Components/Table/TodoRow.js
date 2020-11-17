@@ -10,7 +10,6 @@ import {
   CogIcon,
   IconButton,
 } from "evergreen-ui";
-import AddDialog from "./AddDialog";
 import React from "react";
 
 const TodoRow = ({
@@ -50,8 +49,8 @@ const TodoRow = ({
                   <Menu.Item
                     icon={completed ? IssueNewIcon : IssueClosedIcon}
                     onSelect={() => {
+                      toggleCompleted({ ...todo, completed: !todo.completed });
                       close();
-                      toggleCompleted(todo.id);
                     }}
                     disabled={disableCompletedBtn}
                   >
@@ -79,7 +78,6 @@ const TodoRow = ({
           </Popover>
         </Table.TextCell>
       </Table.Row>
-      <AddDialog user={username} title={todo.title} />
     </>
   );
 };
