@@ -14,7 +14,6 @@ const BodyTodoRows = ({
   let newTodos = [...todos];
 
   if (newTodo) {
-    console.log("new Todo ready to be added to list", newTodo);
     newTodos = [newTodo, ...todos];
   }
 

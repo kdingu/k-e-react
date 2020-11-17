@@ -15,7 +15,6 @@ class TodoTable extends Component {
     this.state = {
       todos: [],
       newTodo: {},
-      // users: this.props.users,
       spinner: false,
       alertSuccess: false,
       alertDanger: false,
@@ -27,7 +26,6 @@ class TodoTable extends Component {
       titleFilter: "",
     };
 
-    this.toggleCompleted = this.toggleCompleted.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.onUsernameFilterChange = this.onUsernameFilterChange.bind(this);
     this.onTitleFilterChange = this.onTitleFilterChange.bind(this);
@@ -35,14 +33,12 @@ class TodoTable extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.newTodo !== prevState.newTodo) {
-      // console.log("derive not new");
       return { newTodo: nextProps.newTodo };
     }
     return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log("update", prevProps.newTodo, prevState.newTodo);
     if (prevProps.newTodo !== this.state.newTodo) {
       this.addTodo(this.props.newTodo);
     }
@@ -89,29 +85,6 @@ class TodoTable extends Component {
       });
   };
 
-  async toggleCompleted(id) {
-    this.setState({ spinner: true });
-
-    const newTodo = { ...this.state.todos.filter((todo) => todo.id === id)[0] };
-    newTodo.completed = !newTodo.completed;
-
-    const todos = this.state.todos.map((todo) => {
-      return todo.id === id ? { ...newTodo } : { ...todo };
-    });
-
-    await axios
-      .patch(`${C.TODO_API}/${id}`, newTodo)
-      .then((res) => {
-        if (res.status === 200) {
-          this.setState({ todos, spinner: false });
-        }
-      })
-      .catch((err) => {
-        this.setState({ spinner: false });
-        console.log(err);
-      });
-  }
-
   async deleteTodo(id) {
     this.setState({ spinner: true });
     const todos = this.state.todos.filter((todo) => todo.id !== id);
@@ -129,7 +102,6 @@ class TodoTable extends Component {
   }
 
   async addTodo(todo) {
-    // console.log("add todo from TodoTable", todo);
     const newTodos = [...this.state.todos];
 
     // submit post to server
@@ -172,7 +144,7 @@ class TodoTable extends Component {
     const { users } = this.props;
 
     return (
-      <Pane maxWidth={C.MAX_WIDTH} margin="auto">
+      <Pane paddingX={16} maxWidth={C.MAX_WIDTH} margin="auto">
         <Heading
           style={{ textTransform: "uppercase" }}
           marginBottom={6}

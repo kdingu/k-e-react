@@ -15,6 +15,7 @@ const Header = ({
       justifyContent="center"
       background="tint2"
       width="100%"
+      paddingX={6}
       position="fixed"
       top="0"
       elevation={1}
