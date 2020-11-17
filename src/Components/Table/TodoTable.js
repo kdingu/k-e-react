@@ -187,21 +187,18 @@ class TodoTable extends Component {
         </Heading>
         <Table
           width="100%"
+          maxHeight="50vh"
           elevation={1}
           position="relative"
           borderRadius={3}
           overflow="hidden"
         >
           <Table.Head>
-            <Table.TextHeaderCell flexBasis={60} flexGrow={0}>
+            <Table.TextHeaderCell flexBasis={50} flexShrink={0} flexGrow={0}>
               ID
             </Table.TextHeaderCell>
-            <Table.TextHeaderCell flexBasis={160} flexGrow={0}>
-              Todo User
-            </Table.TextHeaderCell>
-            <Table.TextHeaderCell flexBasis={560} flexGrow={0}>
-              Title
-            </Table.TextHeaderCell>
+            <Table.TextHeaderCell>Todo User</Table.TextHeaderCell>
+            <Table.TextHeaderCell>Title</Table.TextHeaderCell>
             <Table.TextHeaderCell textAlign="right">
               Options
             </Table.TextHeaderCell>

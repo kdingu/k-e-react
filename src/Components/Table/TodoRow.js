@@ -25,19 +25,15 @@ const TodoRow = ({
   return (
     <>
       <Table.Row background={completed ? "greenTint" : "yellowTint"}>
-        <Table.TextCell flexBasis={60} flexGrow={0}>
+        <Table.TextCell flexBasis={50} flexShrink={0} flexGrow={0}>
           {todo.id}
         </Table.TextCell>
 
-        <Table.TextCell flexBasis={160} flexGrow={0}>
-          {username}
-        </Table.TextCell>
+        <Table.TextCell>{username}</Table.TextCell>
 
-        <Table.TextCell flexBasis={560} flexGrow={0}>
-          {todo.title}
-        </Table.TextCell>
+        <Table.TextCell>{todo.title}</Table.TextCell>
 
-        <Table.TextCell textAlign="right">
+        <Table.TextCell>
           <Popover
             position={Position.BOTTOM_RIGHT}
             content={({ close }) => (

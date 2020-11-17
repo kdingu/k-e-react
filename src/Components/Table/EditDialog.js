@@ -39,6 +39,7 @@ class EditDialog extends Component {
     };
     return (
       <Dialog
+        topOffset="20vmin"
         isShown={this.props.isShown}
         title={`Edit: ${todoId}`}
         intent="success"
