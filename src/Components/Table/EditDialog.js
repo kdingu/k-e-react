@@ -52,7 +52,9 @@ class EditDialog extends Component {
         <SelectField
           label="Todo User Name"
           required
-          onChange={(e) => this.setState({ todoUserId: e.target.value })}
+          onChange={(e) =>
+            this.setState({ todoUserId: parseInt(e.target.value) })
+          }
           value={todoUserId}
         >
           {users.map((username, i) => (

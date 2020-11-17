@@ -59,6 +59,7 @@ class AddTodo extends Component {
     return (
       <Pane>
         <Dialog
+          topOffset="20vmin"
           title="Create New Todo"
           isShown={this.state.isShown}
           onCloseComplete={() => this.setState({ isShown: false })}

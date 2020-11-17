@@ -25,6 +25,7 @@ const Header = ({
         display="flex"
         flexFlow="column"
         paddingY={16}
+        paddingX={16}
         width="100%"
         maxWidth={C.MAX_WIDTH}
       >
@@ -33,8 +34,6 @@ const Header = ({
           alignItems="center"
           justifyContent="space-between"
           display="flex"
-          border="1px"
-          borderColor="#ff0000"
         >
           <Heading fontSize={25} size={100}>
             {title}

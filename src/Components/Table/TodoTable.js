@@ -29,6 +29,8 @@ class TodoTable extends Component {
     this.deleteTodo = this.deleteTodo.bind(this);
     this.onUsernameFilterChange = this.onUsernameFilterChange.bind(this);
     this.onTitleFilterChange = this.onTitleFilterChange.bind(this);
+
+    this.alertTimeout = 0;
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -73,6 +75,14 @@ class TodoTable extends Component {
         if (res.status === 200) {
           // on success update state, remove spinner and show alert
           this.setState({ spinner: false, todos, alertSuccess: true });
+
+          // remove alert after 5sec
+          if (this.alertTimeout) {
+            clearTimeout(this.alertTimeout);
+          }
+          this.alertTimeout = setTimeout(() => {
+            this.setState({ alertSuccess: false });
+          }, 5000);
         } else {
           // bad res.status, show alert and remove spinner
           this.setState({ alertDanger: true, spinner: false });
@@ -114,6 +124,14 @@ class TodoTable extends Component {
           const newTodo = { ...res.data, id: v4() };
           const todos = [newTodo, ...newTodos];
           this.setState({ todos, alertSuccess: true, newTodoId: newTodo.id });
+
+          // remove alert after 5sec
+          if (this.alertTimeout) {
+            clearTimeout(this.alertTimeout);
+          }
+          this.alertTimeout = setTimeout(() => {
+            this.setState({ alertSuccess: false });
+          }, 5000);
         }
       })
       .catch((err) => {
